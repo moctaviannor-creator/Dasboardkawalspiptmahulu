@@ -305,7 +305,6 @@ table {
   min-width: 1200px;
 }
 
-/* HEADER TABEL – Gradien Gelap Modern */
 thead th {
   text-align: left;
   font-size: 12px;
@@ -321,7 +320,6 @@ thead th {
   z-index: 10;
 }
 
-/* ===== WARNA LATAR KOLOM (GRADIENT HALUS) ===== */
 tbody td {
   padding: 12px 10px;
   border-bottom: 1px solid rgba(226, 232, 240, 0.5);
@@ -330,7 +328,6 @@ tbody td {
   transition: all 0.2s ease;
 }
 
-/* Kolom Nomor */
 tbody td:nth-child(1) {
   background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
   font-weight: 700;
@@ -339,66 +336,54 @@ tbody td:nth-child(1) {
   border-left: 4px solid #0284c7;
 }
 
-/* Kolom OPD */
 tbody td:nth-child(2) {
   background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
   font-weight: 600;
   color: #1e3a8a;
 }
 
-/* Kolom SA */
 tbody td:nth-child(3) {
   background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
 }
 
-/* Kolom Evidence */
 tbody td:nth-child(4) {
   background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);
 }
 
-/* Kolom QA APIP */
 tbody td:nth-child(5) {
   background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
 }
 
-/* Kolom MRI */
 tbody td:nth-child(6) {
   background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
 }
 
-/* Kolom IEPK */
 tbody td:nth-child(7) {
   background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%);
 }
 
-/* Kolom RTP */
 tbody td:nth-child(8) {
   background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
 }
 
-/* Kolom Status */
 tbody td:nth-child(9) {
   background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
 }
 
-/* Kolom Kelengkapan */
 tbody td:nth-child(10) {
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
 }
 
-/* Kolom Detail & Hapus */
 tbody td:nth-child(11),
 tbody td:nth-child(12) {
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
   text-align: center;
 }
 
-/* Hover pada baris – efek menyala */
 tbody tr:hover td {
   filter: brightness(0.97);
 }
 
-/* ===== INPUT & SELECT DI DALAM TABEL ===== */
 tbody input[type="number"],
 tbody select {
   width: 100%;
@@ -422,7 +407,6 @@ tbody select:focus {
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
-/* Input readonly (SA) */
 tbody input[readonly] {
   background: #f1f5f9;
   color: #64748b;
@@ -431,7 +415,6 @@ tbody input[readonly] {
   font-weight: 700;
 }
 
-/* ===== BADGE KELENGKAPAN ===== */
 .badge {
   display: inline-block;
   font-size: 12px;
@@ -460,7 +443,6 @@ tbody input[readonly] {
   color: var(--red);
 }
 
-/* ===== TOMBOL AKSI TABEL ===== */
 .btn-detail {
   background: var(--primary-light);
   border: none;
@@ -506,7 +488,6 @@ tbody input[readonly] {
   color: var(--primary);
 }
 
-/* ===== MODAL ===== */
 .modal-overlay {
   display: none;
   position: fixed;
@@ -536,7 +517,6 @@ tbody input[readonly] {
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
 }
 
-/* ===== MODAL GRAFIK KPI - ELEGAN & MODERN ===== */
 #kpiChartModal .modal {
   background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #ffffff 100%);
   border: 1px solid rgba(59, 130, 246, 0.2);
@@ -828,7 +808,6 @@ input[type="file"]:hover {
   background: var(--primary-hover);
 }
 
-/* ===== CONFIRM MODALS ===== */
 .confirm-overlay {
   display: none;
   position: fixed;
@@ -935,7 +914,6 @@ input[type="file"]:hover {
   color: #94a3b8;
 }
 
-/* ===== EMPTY STATE ===== */
 .empty-state {
   text-align: center;
   padding: 48px 0;
@@ -943,7 +921,6 @@ input[type="file"]:hover {
   font-size: 14px;
 }
 
-/* ===== FOOTER ===== */
 .footer-note {
   font-size: 12px;
   color: var(--text-secondary);
@@ -953,7 +930,6 @@ input[type="file"]:hover {
   padding-top: 20px;
 }
 
-/* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
   .kpi-grid { grid-template-columns: repeat(3, 1fr); }
 }
@@ -972,7 +948,6 @@ input[type="file"]:hover {
   .topbar h1 { font-size: 22px; }
 }
 
-/* ===== MODAL PERINGATAN KHUSUS ===== */
 #warningModal .confirm-modal {
   border-top: 5px solid #dc2626;
 }
@@ -981,7 +956,6 @@ input[type="file"]:hover {
   color: #dc2626;
 }
 
-/* ===== FILE DELETE MODAL ===== */
 #fileDeleteModal .confirm-modal {
   border-top: 5px solid #dc2626;
 }
@@ -990,7 +964,6 @@ input[type="file"]:hover {
   color: #dc2626;
 }
 
-/* ===== MODAL TAMBAH TAHUN ===== */
 #addYearModal .confirm-modal {
   border-top: 5px solid var(--primary);
   max-width: 480px;
@@ -1061,7 +1034,6 @@ input[type="file"]:hover {
   background: var(--primary-hover);
 }
 
-/* ===== MODAL TAMBAH OPD ===== */
 #addOpdModal .confirm-modal {
   border-top: 5px solid var(--primary);
   max-width: 460px;
@@ -1121,7 +1093,6 @@ input[type="file"]:hover {
   background: var(--primary-hover);
 }
 
-/* ===== STYLE UNTUK SVG ICON PASSWORD ===== */
 .eye-icon {
   cursor: pointer;
   display: inline-block;
@@ -1135,7 +1106,6 @@ input[type="file"]:hover {
   color: #475569;
 }
 
-/* ===== BACKUP MODAL ===== */
 #backupModal .confirm-modal {
   border-top: 5px solid var(--primary);
   max-width: 750px;
@@ -1239,7 +1209,6 @@ input[type="file"]:hover {
   justify-content: space-between;
 }
 
-/* ===== MODAL KONFIRMASI BACKUP ===== */
 #confirmBackupModal .confirm-modal {
   border-top: 5px solid var(--primary);
   max-width: 440px;
@@ -1283,7 +1252,6 @@ input[type="file"]:hover {
   border-color: #dc2626;
 }
 
-/* ===== MODAL UBAH NAMA OPD ===== */
 #editNameModal .confirm-modal {
   border-top: 5px solid var(--primary);
   max-width: 460px;
@@ -1352,7 +1320,6 @@ input[type="file"]:hover {
   background: var(--primary-hover);
 }
 
-/* ===== MODAL KONFIRMASI UBAH NAMA ===== */
 #confirmNameModal .confirm-modal {
   border-top: 5px solid var(--primary);
   max-width: 460px;
@@ -1412,7 +1379,6 @@ input[type="file"]:hover {
   background: var(--primary-hover);
 }
 
-/* ===== PROGRESS UPLOAD INLINE ===== */
 .evid-upload-progress {
   margin-top: 8px;
   background: #f1f5f9;
@@ -1448,7 +1414,6 @@ input[type="file"]:hover {
   margin-top: 2px;
 }
 
-/* ===== MODAL KONFIRMASI PULIHKAN ===== */
 #confirmRestoreModal .confirm-modal {
   border-top: 5px solid var(--primary);
   max-width: 440px;
@@ -1472,7 +1437,6 @@ input[type="file"]:hover {
   background: var(--primary);
 }
 
-/* ===== LOADING SCREEN BARU ===== */
 #loadingOverlay {
   position: fixed;
   top: 0;
@@ -1554,7 +1518,6 @@ input[type="file"]:hover {
   text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
-/* Indikator simpan per kolom */
 .save-indicator {
   display: inline-block;
   margin-left: 6px;
@@ -1685,7 +1648,7 @@ input[type="file"]:hover {
 
 <!-- Panel Tabel -->
 <div class="panel">
-  <div class="panel-head"><h2>🏢 Daftar OPD - Tahun <span id="currentYearLabel">2025</span></h2><p class="status-msg" id="saveStatus"></p></div>
+  <div class="panel-head"><h2>🏢 Daftar OPD - Tahun <span id="currentYearLabel">2026</span></h2><p class="status-msg" id="saveStatus"></p></div>
   <p class="desc">Isi data langsung pada tabel. Klik tombol ✎ untuk mengedit 25 subunsur, evidence, dan upload file untuk masing‑masing level.</p>
   <div class="table-wrap"><table><thead><tr><th style="width:40px;">No.</th><th style="min-width:160px;">OPD</th><th style="width:80px;">SA</th><th style="min-width:130px;">Evidence</th><th style="min-width:130px;">QA APIP</th><th style="width:110px;">MRI</th><th style="width:110px;">IEPK</th><th style="min-width:120px;">RTP</th><th style="min-width:120px;">Status</th><th style="min-width:150px;">Kelengkapan</th><th style="width:60px;">Detail</th><th style="width:50px;"></th></tr></thead><tbody id="tableBody"></tbody></table></div>
   <div class="empty-state" id="emptyState" style="display:none;">Belum ada OPD. Klik <strong>"Tambah OPD"</strong> untuk memulai.</div>
@@ -1765,7 +1728,7 @@ input[type="file"]:hover {
 <div class="confirm-overlay" id="backupModal">
   <div class="confirm-modal" style="border-top: 5px solid var(--primary); max-width: 700px; text-align: left;">
     <div class="confirm-icon" style="font-size: 50px; color: var(--primary); background: var(--primary-light); width: 80px; height: 80px; line-height: 80px; border-radius: 50%; margin: 0 auto 16px; display: flex; justify-content: center; align-items: center;">🔄</div>
-    <h4 style="font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 6px; text-align: center;">Riwayat Backup Data - <span id="backupYearLabel">2025</span></h4>
+    <h4 style="font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 6px; text-align: center;">Riwayat Backup Data - <span id="backupYearLabel">2026</span></h4>
     <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; text-align: center;">Daftar backup otomatis yang tersimpan per tahun. Pilih salah satu untuk memulihkan.</p>
     <div id="backupListContainer"></div>
     <div id="backupEmpty" style="display:none; text-align:center; color:var(--text-secondary); font-size:14px; padding:20px;">Belum ada backup tersedia.</div>
@@ -1869,7 +1832,7 @@ input[type="file"]:hover {
 <script>
 // ====== STATUS GLOBAL ======
 let rows = [];
-let currentYear = '2026';
+let currentYear = new Date().getFullYear().toString();
 let SUBUNSUR_DATA = {};
 let PARAM_LIST = [];
 let saveTimer = null;
@@ -1879,7 +1842,6 @@ let isDeletingYear = false;
 let isCreatingBackup = false;
 let isRestoringBackup = false;
 let isDeletingFile = false;
-
 let isSaving = false;
 let pendingSave = false;
 let chartInstance = null;
@@ -1887,7 +1849,7 @@ let originalRows = [];
 
 // ====== PANGGIL SERVER ======
 function callServer(action, params = {}) {
-  const functionUrl = '/.netlify/functions/proxy'; // atau URL Apps Script jika darurat
+  const functionUrl = '/.netlify/functions/proxy';
   const body = { ...params, action };
   return fetch(functionUrl, {
     method: 'POST',
@@ -2272,7 +2234,6 @@ function showChart(type) {
   let labels = [];
   let data = [];
   let backgroundColor = [];
-  let borderColor = [];
   let typeChart = 'bar';
 
   if (type === 'rataRata') {
@@ -2608,12 +2569,12 @@ async function openEditModal(id) {
       const fileList = Array.from(fileInput.files);
       if (fileList.length === 0) return;
 
-const totalSize = fileList.reduce((sum, f) => sum + f.size, 0);
-if (totalSize > 10 * 1024 * 1024) {
-  showWarning('Total ukuran file melebihi 10 MB! Silakan pilih lebih sedikit.');
-  fileInput.value = '';
-  return;
-}
+      const totalSize = fileList.reduce((sum, f) => sum + f.size, 0);
+      if (totalSize > 10 * 1024 * 1024) {
+        showWarning('Total ukuran file melebihi 10 MB! Silakan pilih lebih sedikit.');
+        fileInput.value = '';
+        return;
+      }
 
       const progressContainer = document.querySelector(`.evid-upload-progress[data-sub="${subCode}"][data-param="${paramId}"][data-level="${level}"]`);
       progressContainer.classList.add('active');
@@ -2885,7 +2846,7 @@ document.getElementById('addYearOk').addEventListener('click', async function() 
   btnOk.textContent = 'Ya, Tambahkan';
 });
 
-// ====== HAPUS TAHUN (BARU) ======
+// ====== HAPUS TAHUN ======
 document.getElementById('btnDeleteYear').addEventListener('click', function() {
   const year = document.getElementById('yearSelect').value;
   if (!year) return;
@@ -2937,7 +2898,6 @@ document.getElementById('deleteYearOk').addEventListener('click', async function
       errorDiv.style.color = '#dc2626';
       return;
     }
-    // Setelah hapus, muat ulang tahun dan data
     await loadYears();
     currentYear = '2026';
     document.getElementById('yearSelect').value = currentYear;
