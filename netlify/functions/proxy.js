@@ -1,7 +1,6 @@
 // netlify/functions/proxy.js
 const https = require('https');
 
-// GANTI URL INI DENGAN URL APPS SCRIPT BARU ANDA
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCaHeTKv9NNd3LCfb7658xWIZPII3cL5rE81pW97DTfV_RRry7sd7wMhp0PQg0EhTK/exec';
 
 exports.handler = async (event) => {
@@ -28,8 +27,6 @@ exports.handler = async (event) => {
       const url = new URL(event.path, `https://${event.headers.host}`);
       params.action = url.searchParams.get('action') || '';
     }
-
-    const action = params.action || '';
 
     // SELALU kirim POST ke Apps Script jika metode asli POST
     if (event.httpMethod === 'POST') {
