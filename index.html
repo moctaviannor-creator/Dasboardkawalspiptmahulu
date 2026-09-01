@@ -1864,6 +1864,7 @@ function callServer(action, params = {}) {
       } catch (e) {
         throw new Error('Server mengembalikan respons non-JSON: ' + text.substring(0, 100));
       }
+      // Jika server mengembalikan object error, langsung lempar error
       if (data && data.status === 'error') {
         throw new Error(data.message || 'Terjadi kesalahan pada server');
       }
@@ -1874,7 +1875,6 @@ function callServer(action, params = {}) {
       throw error;
     });
 }
-
 // ====== VERIFIKASI PASSWORD ======
 async function verifyAccess(password) {
   try {
@@ -1931,10 +1931,9 @@ async function loadData() {
   
   try {
     const data = await callServer('getData', { year });
-    if (!Array.isArray(data)) {
-      console.warn('Data yang diterima bukan array. Menggunakan array kosong.', data);
-      rows = [];
-    } else {
+    // SELALU reset rows ke array kosong dulu
+    rows = [];
+    if (Array.isArray(data)) {
       rows = data.map(r => ({
         ...r,
         rtp: r.rtp || 'Belum',
@@ -1944,6 +1943,8 @@ async function loadData() {
         mri: r.mri || 0,
         iepk: r.iepk || 0
       }));
+    } else {
+      console.warn('Data bukan array, rows diset kosong', data);
     }
     originalRows = JSON.parse(JSON.stringify(rows));
     
@@ -1954,6 +1955,10 @@ async function loadData() {
   } catch (e) {
     status.textContent = '⚠️ ' + e.message;
     console.error(e);
+    // Pastikan rows tetap array kosong jika error
+    rows = [];
+    render();
+    updateKpisLocal();
   }
 }
 
@@ -2061,6 +2066,12 @@ async function saveData() {
   const year = currentYear;
 
   try {
+    // PENTING: pastikan rows adalah array sebelum diproses
+    if (!Array.isArray(rows)) {
+      console.error('rows bukan array, diset kosong', rows);
+      rows = [];
+    }
+
     const result = await callServer('saveData', { rows: JSON.stringify(rows), year });
     if (result.status === 'error') {
       status.textContent = '⚠️ ' + result.message;
@@ -2085,6 +2096,10 @@ async function saveData() {
 function render() {
   const tbody = document.getElementById('tableBody');
   const empty = document.getElementById('emptyState');
+  if (!Array.isArray(rows)) {
+    console.error('rows bukan array di render, diset kosong');
+    rows = [];
+  }
   if (rows.length === 0) { tbody.innerHTML = ''; empty.style.display = 'block'; }
   else {
     empty.style.display = 'none';
