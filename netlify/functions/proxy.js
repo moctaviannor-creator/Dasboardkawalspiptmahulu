@@ -1,7 +1,7 @@
 // netlify/functions/proxy.js
 const https = require('https');
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCaHeTKv9NNd3LCfb7658xWIZPII3cL5rE81pW97DTfV_RRry7sd7wMhp0PQg0EhTK/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbypn36DL6oLNKYA5TJPYqVPJnYJiJgUj0vVMYIwixyHQFX9UEzjH485lBIOXgWyYAhy/exec';
 
 exports.handler = async (event) => {
   try {
