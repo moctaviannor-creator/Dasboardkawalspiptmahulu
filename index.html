@@ -1847,8 +1847,7 @@ input[type="file"]:hover {
 <script>
 // ====== STATUS GLOBAL ======
 let rows = [];
-// ⭐ PERUBAHAN: currentYear dimulai dari 2026
-let currentYear = '2026';
+let currentYear = new Date().getFullYear().toString();
 let SUBUNSUR_DATA = {};
 let PARAM_LIST = [];
 let saveTimer = null;
@@ -1921,15 +1920,9 @@ async function loadYears() {
       const option = document.createElement('option');
       option.value = year;
       option.textContent = year;
+      if (year === currentYear) option.selected = true;
       select.appendChild(option);
     });
-    // Pastikan currentYear selalu ada di daftar, jika tidak pilih tahun teratas
-    if (!uniqueYears.includes(currentYear)) {
-      select.value = uniqueYears[0];
-      currentYear = uniqueYears[0];
-    } else {
-      select.value = currentYear;
-    }
   } catch (e) {
     console.error('Gagal memuat tahun:', e);
   }
