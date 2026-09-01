@@ -1900,7 +1900,12 @@ function callServer(action, params = {}) {
       try {
         data = JSON.parse(text);
       } catch (e) {
-        throw new Error('Server returned non-JSON response: ' + text.substring(0, 100));
+        // Jika bukan JSON, berarti error dari server (misalnya 404 HTML)
+        throw new Error('Server mengembalikan respons non-JSON: ' + text.substring(0, 100));
+      }
+      // Jika respons dari server adalah object error, lempar error
+      if (data && data.status === 'error') {
+        throw new Error(data.message || 'Terjadi kesalahan pada server');
       }
       return data;
     })
@@ -1966,15 +1971,21 @@ async function loadData() {
   
   try {
     const data = await callServer('getData', { year });
-    rows = (data || []).map(r => ({
-      ...r,
-      rtp: r.rtp || 'Belum',
-      status: r.status || 'Belum',
-      evidence: r.evidence || 'Belum',
-      qaApip: r.qaApip || 'Belum',
-      mri: r.mri || 0,
-      iepk: r.iepk || 0
-    }));
+    // Pastikan data berupa array, jika bukan maka gunakan array kosong
+    if (!Array.isArray(data)) {
+      console.warn('Data yang diterima bukan array. Menggunakan array kosong.', data);
+      rows = [];
+    } else {
+      rows = data.map(r => ({
+        ...r,
+        rtp: r.rtp || 'Belum',
+        status: r.status || 'Belum',
+        evidence: r.evidence || 'Belum',
+        qaApip: r.qaApip || 'Belum',
+        mri: r.mri || 0,
+        iepk: r.iepk || 0
+      }));
+    }
     originalRows = JSON.parse(JSON.stringify(rows));
     
     status.textContent = '✅ Data dimuat';
