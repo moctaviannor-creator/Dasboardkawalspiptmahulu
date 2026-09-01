@@ -1847,7 +1847,8 @@ input[type="file"]:hover {
 <script>
 // ====== STATUS GLOBAL ======
 let rows = [];
-let currentYear = new Date().getFullYear().toString();
+// ⭐ PERUBAHAN: currentYear dimulai dari 2026
+let currentYear = '2026';
 let SUBUNSUR_DATA = {};
 let PARAM_LIST = [];
 let saveTimer = null;
@@ -1908,7 +1909,7 @@ async function verifyDelete(password) {
   }
 }
 
-// ====== LOAD TAHUN (UNIK) – DIPERBAIKI ======
+// ====== LOAD TAHUN (UNIK) ======
 async function loadYears() {
   try {
     const years = await callServer('getYears');
