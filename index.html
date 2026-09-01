@@ -86,6 +86,7 @@ body {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 button {
@@ -1615,6 +1616,7 @@ input[type="file"]:hover {
     <label style="color:#ffffff; font-size:14px; display:flex; align-items:center; gap:8px; background:rgba(255,255,255,0.1); padding:8px 12px; border-radius:10px;">
       <span>Tahun:</span>
       <select id="yearSelect" style="background:#ffffff; border:none; padding:8px; border-radius:6px; font-size:14px; color:#0f172a;"></select>
+      <button id="btnDeleteYear" title="Hapus Tahun" style="background:rgba(220,38,38,0.3); color:#ffffff; padding:8px; border-radius:6px;">🗑️</button>
     </label>
     <button id="btnAddYear" style="background:rgba(37,99,235,0.7); color:#ffffff;">➕ Tambah Tahun</button>
     <button id="btnAdd" class="primary">＋ Tambah OPD</button>
@@ -1707,7 +1709,7 @@ input[type="file"]:hover {
   <div id="modalSaveStatus" style="display:none; margin-bottom:15px; text-align:center; font-weight:bold; font-size:14px;"></div>
   <div class="modal-actions"><button id="modalCancel" class="danger">Batal</button><button id="modalSave" class="primary">Simpan Detail</button></div></div></div>
 
-<!-- Modal Hapus -->
+<!-- Modal Hapus OPD -->
 <div class="confirm-overlay" id="confirmModal"><div class="confirm-modal"><div class="confirm-icon">🗑️</div><h4>Hapus OPD?</h4><p id="confirmMessage">Yakin ingin menghapus OPD ini?</p><div id="confirmError" style="display:none; background:#fee2e2; color:#dc2626; padding:10px; border-radius:6px; margin-bottom:12px; font-size:13px; font-weight:500; text-align:center; border:1px solid #fecaca;"></div><div style="position:relative; margin-bottom:12px;"><input type="password" id="confirmPassword" placeholder="Masukkan password untuk hapus" style="width:100%; padding:12px 40px 12px 12px; border:1px solid var(--border); border-radius:6px;"><span id="togglePassword" class="eye-icon" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); cursor:pointer;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span></div><div class="confirm-actions"><button id="confirmCancel" class="danger" onclick="closeConfirmModal()">Batal</button><button id="confirmOk" class="primary">Ya, Hapus</button></div></div></div>
 
 <!-- Modal Tambah Tahun -->
@@ -1721,6 +1723,26 @@ input[type="file"]:hover {
     <div class="confirm-actions">
       <button id="addYearCancel" class="danger">Batal</button>
       <button id="addYearOk" class="primary">Ya, Tambahkan</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Hapus Tahun -->
+<div class="confirm-overlay" id="deleteYearModal">
+  <div class="confirm-modal">
+    <div class="confirm-icon">🗑️</div>
+    <h4>Hapus Tahun?</h4>
+    <p id="deleteYearMessage">Yakin ingin menghapus tahun ini?</p>
+    <div id="deleteYearError" style="display:none; background:#fee2e2; color:#dc2626; padding:10px; border-radius:6px; margin-bottom:12px; font-size:13px; font-weight:500; text-align:center; border:1px solid #fecaca;"></div>
+    <div style="position:relative; margin-bottom:12px;">
+      <input type="password" id="deleteYearPassword" placeholder="Masukkan password hapus" style="width:100%; padding:12px 40px 12px 12px; border:1px solid var(--border); border-radius:6px;">
+      <span id="toggleDeleteYearPassword" class="eye-icon" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); cursor:pointer;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </span>
+    </div>
+    <div class="confirm-actions">
+      <button id="deleteYearCancel" class="danger">Batal</button>
+      <button id="deleteYearOk" class="primary">Ya, Hapus Tahun</button>
     </div>
   </div>
 </div>
@@ -1847,17 +1869,17 @@ input[type="file"]:hover {
 <script>
 // ====== STATUS GLOBAL ======
 let rows = [];
-let currentYear = new Date().getFullYear().toString();
+let currentYear = '2026';
 let SUBUNSUR_DATA = {};
 let PARAM_LIST = [];
 let saveTimer = null;
 let isAddingOpd = false;
 let isAddingYear = false;
+let isDeletingYear = false;
 let isCreatingBackup = false;
 let isRestoringBackup = false;
 let isDeletingFile = false;
 
-// Queue untuk menyimpan data agar tidak bentrok
 let isSaving = false;
 let pendingSave = false;
 let chartInstance = null;
@@ -1887,6 +1909,7 @@ function callServer(action, params = {}) {
       throw error;
     });
 }
+
 // ====== VERIFIKASI PASSWORD ======
 async function verifyAccess(password) {
   try {
@@ -1908,7 +1931,7 @@ async function verifyDelete(password) {
   }
 }
 
-// ====== LOAD TAHUN (UNIK) ======
+// ====== LOAD TAHUN ======
 async function loadYears() {
   try {
     const years = await callServer('getYears');
@@ -1920,9 +1943,14 @@ async function loadYears() {
       const option = document.createElement('option');
       option.value = year;
       option.textContent = year;
-      if (year === currentYear) option.selected = true;
       select.appendChild(option);
     });
+    if (!uniqueYears.includes(currentYear)) {
+      select.value = uniqueYears[0];
+      currentYear = uniqueYears[0];
+    } else {
+      select.value = currentYear;
+    }
   } catch (e) {
     console.error('Gagal memuat tahun:', e);
   }
@@ -2042,13 +2070,12 @@ function applyKpis(kpi) {
   setText('kpiIEPKNote', kpi.iepkCount + ' OPD terisi');
 }
 
-// ====== SAVE DATA (DEBOUNCE + QUEUE) ======
+// ====== SAVE DATA ======
 function debounceSave() {
   clearTimeout(saveTimer);
   saveTimer = setTimeout(saveData, 800);
 }
 
-// Perbaikan: definisikan syncData
 function syncData() {
   debounceSave();
 }
@@ -2189,7 +2216,7 @@ function attachHandlers() {
           console.error('Error saveField:', err);
         });
     };
-    el.onblur = syncData;  // Perbaikan: ganti addEventListener
+    el.onblur = syncData;
   });
 
   document.querySelectorAll('select[data-id]').forEach(el => {
@@ -2216,7 +2243,7 @@ function attachHandlers() {
           console.error('Error saveField:', err);
         });
     };
-    el.onblur = syncData;  // Perbaikan: ganti addEventListener
+    el.onblur = syncData;
   });
 }
 
@@ -2425,7 +2452,7 @@ document.addEventListener('click', function(e) {
   else if (btn.classList.contains('del-btn')) openConfirmModal(btn.getAttribute('data-id'));
 });
 
-// ====== MODAL HAPUS ======
+// ====== MODAL HAPUS OPD ======
 let deleteTargetId = null;
 function openConfirmModal(id) {
   deleteTargetId = id;
@@ -2850,6 +2877,77 @@ document.getElementById('addYearOk').addEventListener('click', async function() 
   btnOk.textContent = 'Ya, Tambahkan';
 });
 
+// ====== HAPUS TAHUN (BARU) ======
+document.getElementById('btnDeleteYear').addEventListener('click', function() {
+  const year = document.getElementById('yearSelect').value;
+  if (!year) return;
+  if (year === '2026') {
+    showWarning('Tahun default 2026 tidak dapat dihapus.');
+    return;
+  }
+  document.getElementById('deleteYearMessage').textContent = `Yakin ingin menghapus tahun ${year}? Semua data OPD untuk tahun ini akan hilang.`;
+  document.getElementById('deleteYearPassword').value = '';
+  document.getElementById('deleteYearError').style.display = 'none';
+  document.getElementById('deleteYearModal').classList.add('active');
+});
+document.getElementById('deleteYearCancel').addEventListener('click', function() {
+  document.getElementById('deleteYearModal').classList.remove('active');
+});
+document.getElementById('toggleDeleteYearPassword').addEventListener('click', function() {
+  const input = document.getElementById('deleteYearPassword');
+  if (input.type === 'password') {
+    input.type = 'text';
+    this.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+  } else {
+    input.type = 'password';
+    this.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+  }
+});
+document.getElementById('deleteYearOk').addEventListener('click', async function() {
+  if (isDeletingYear) return;
+  isDeletingYear = true;
+  const btnOk = this;
+  btnOk.disabled = true;
+  btnOk.textContent = '⏳ Menghapus...';
+  const year = document.getElementById('yearSelect').value;
+  const password = document.getElementById('deleteYearPassword').value.trim();
+  const errorDiv = document.getElementById('deleteYearError');
+  try {
+    const valid = await verifyDelete(password);
+    if (!valid) {
+      errorDiv.textContent = '❌ Password hapus salah!';
+      errorDiv.style.display = 'block';
+      errorDiv.style.background = '#fee2e2';
+      errorDiv.style.color = '#dc2626';
+      return;
+    }
+    const result = await callServer('deleteYear', { year });
+    if (result.status === 'error') {
+      errorDiv.textContent = '❌ ' + result.message;
+      errorDiv.style.display = 'block';
+      errorDiv.style.background = '#fee2e2';
+      errorDiv.style.color = '#dc2626';
+      return;
+    }
+    // Setelah hapus, muat ulang tahun dan data
+    await loadYears();
+    currentYear = '2026';
+    document.getElementById('yearSelect').value = currentYear;
+    await loadData();
+    document.getElementById('deleteYearModal').classList.remove('active');
+    showWarning('✅ Tahun berhasil dihapus.');
+  } catch (err) {
+    errorDiv.textContent = '❌ ' + err.message;
+    errorDiv.style.display = 'block';
+    errorDiv.style.background = '#fee2e2';
+    errorDiv.style.color = '#dc2626';
+  } finally {
+    isDeletingYear = false;
+    btnOk.disabled = false;
+    btnOk.textContent = 'Ya, Hapus Tahun';
+  }
+});
+
 // ====== GANTI TAHUN ======
 document.getElementById('yearSelect').addEventListener('change', function() {
   currentYear = this.value;
@@ -3093,7 +3191,7 @@ if (urlParams.get('access') === 'portal') {
     }
   })();
 }
-// ====== SINKRONISASI OTOMATIS SETIAP 5 DETIK ======
+// ====== SINKRONISASI OTOMATIS ======
 setInterval(async function() {
   if (!isSaving && !pendingSave) {
     const activeElement = document.activeElement;
